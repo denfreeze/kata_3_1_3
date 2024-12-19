@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -22,16 +24,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
-                .anyRequest().authenticated()
+                // .antMatchers("/", "/index").permitAll()
+                // .anyRequest().authenticated()
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
+                // .and()
+                // .logout()
+                // .permitAll();
+                // .antMatchers("/authenticated/**").authenticated()
+                // .and()
+                // .formLogin()//.successHandler(successUserHandler)
+                //.permitAll()
                 .and()
-                .logout()
-                .permitAll();
+                .logout().logoutSuccessUrl("/login");
     }
+
 
     // аутентификация inMemory
     @Bean
@@ -43,7 +56,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("user")
                         .roles("USER")
                         .build();
+        UserDetails admin =
+                User.withDefaultPasswordEncoder()
+                        .username("admin")
+                        .password("admin")
+                        .roles("ADMIN")
+                        .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(user, admin);
     }
+
+
 }
