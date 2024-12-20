@@ -1,13 +1,16 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-@RequestMapping("/admin")
+@Controller
+@RequestMapping("/users")
 public class AdminController {
+
     @Autowired
     private UserService userService;
 
@@ -26,7 +29,7 @@ public class AdminController {
     @PostMapping(value = "/new")
     public String createUser(@ModelAttribute User user) {
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
     @GetMapping(value = "/edit")
@@ -38,12 +41,12 @@ public class AdminController {
     @PostMapping(value = "/update")
     public String update(@ModelAttribute("user") User user, @RequestParam("id") Long id) {
         userService.updateUser(id, user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
     @GetMapping(value = "/delete")
     public String delete(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/users";
     }
 }

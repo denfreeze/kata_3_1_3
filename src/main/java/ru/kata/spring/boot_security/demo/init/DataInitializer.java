@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -9,14 +10,19 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-//@Component
-//public class DataInitializer implements CommandLineRunner {
+import java.util.Optional;
+
+// @Component
+// public class DataInitializer implements CommandLineRunner {
 //
-//    @Autowired
-//    private UserRepository userRepository;
+//     @Autowired
+//     private UserRepository userRepository;
 //
-//    @Autowired
-//    private RoleRepository roleRepository;
+//     @Autowired
+//     private RoleRepository roleRepository;
+//
+//     @Autowired
+//     PasswordEncoder passwordEncoder;
 //
 //    @Override
 //    public void run(String... args) throws Exception {
@@ -30,10 +36,17 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 //
 //        // Сохраняем роли в базе данных
 //        if (roleRepository.findByName(adminRole.getName()) == null) {
-//            roleRepository.save(adminRole);
+//            adminRole = roleRepository.save(adminRole);
+//        } else {
+//            Optional<Role> existingAdminRole = roleRepository.findByName(adminRole.getName());
+//            adminRole = existingAdminRole.orElse(adminRole);
 //        }
+
 //        if (roleRepository.findByName(userRole.getName()) == null) {
-//            roleRepository.save(userRole);
+//            userRole = roleRepository.save(userRole);
+//        } else {
+//            Optional<Role> existingUserRole = roleRepository.findByName(userRole.getName());
+//            userRole = existingUserRole.orElse(userRole);
 //        }
 //
 //        // Создание пользователей
@@ -41,16 +54,16 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 //            System.out.println("Creating admin user...");
 //            User admin = new User();
 //            admin.setUsername("admin");
-//            admin.setPassword("admin"); // Не забудьте зашифровать пароль
+//            admin.setPassword(passwordEncoder.encode("admin"));
 //            admin.getRoles().add(adminRole);
 //            userRepository.save(admin);
 //        }
-//
+
 //        if (!userRepository.existsByUsername("user")) {
 //            System.out.println("Creating user...");
 //            User user = new User();
 //            user.setUsername("user");
-//            user.setPassword("user"); // Не забудьте зашифровать пароль
+//            user.setPassword(passwordEncoder.encode("user"));
 //            user.getRoles().add(userRole);
 //            userRepository.save(user);
 //        }

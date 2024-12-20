@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
     }
@@ -44,11 +45,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void updateUser(Long id, User user) {
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

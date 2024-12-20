@@ -9,8 +9,8 @@
 
 <form th:method="POST" th:action="@{/update(id=${user.id})}" th:object="${user}">
     <div>
-        <label for="name">Enter name: </label>
-        <input type="text" th:field="*{name}" id="name">
+        <label for="name">Enter username: </label>
+        <input type="text" th:field="*{username}" id="name">
     </div>
     <br>
     <div>
