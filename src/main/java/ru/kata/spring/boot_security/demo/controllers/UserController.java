@@ -1,35 +1,20 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.security.Principal;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 public class UserController {
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/user")
-    public String homePage() {
-        return "home";
+    public String userInfo(Model model) {
+        model.addAttribute("user", userService.oneUserInfo());
+        return "user";
     }
-
-    // @GetMapping("/authenticated")
-    // public String pageForAuthenticatedUsers(Principal principal) {
-    //     return "secured part of web service " + principal.getName();
-    // }
-
-//     @GetMapping("/")
-//     public String index() {
-//         return "index"; // имя файла index.html
-//     }
-//
-//     @GetMapping("/user")
-//     public String user() {
-//         return "user"; // имя файла user.html
-//     }
-//
-//     @GetMapping("/admin")
-//     public String admin() {
-//         return "admin"; // имя файла admin.html
-//     }
 }
