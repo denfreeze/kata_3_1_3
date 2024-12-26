@@ -35,8 +35,8 @@ public class DataInitializer implements CommandLineRunner {
         Role adminRole = createRoleIfNotExists("ROLE_ADMIN");
         Role userRole = createRoleIfNotExists("ROLE_USER");
 
-        createUserIfNotExists("admin", "admin", adminRole);
-        createUserIfNotExists("user", "user", userRole);
+        createUserIfNotExists("admin", "admin", "admin@mail.com", adminRole);
+        createUserIfNotExists("user", "user", "user@mail.com", userRole);
     }
 
     private Role createRoleIfNotExists(String roleName) {
@@ -50,12 +50,13 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    private void createUserIfNotExists(String username, String password, Role role) {
+    private void createUserIfNotExists(String username, String password, String email, Role role) {
         if (!userRepository.existsByUsername(username)) {
             System.out.println("Creating user: " + username);
             User user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
+            user.setEmail(email);
             user.getRoles().add(role);
             userRepository.save(user);
         }

@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.Set;
 
 @Controller
@@ -20,15 +22,21 @@ public class AdminController {
 
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
-    public String getUsers(Model model) {
+    public String getUsers(Model model, Principal principal) {
+        User currentUser = userService.findByUsername(principal.getName());
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", userService.findAllUsers());
         return "users";
     }
 
     @GetMapping(value = "/new")
-    public String newUser(Model model) {
+    public String newUser(Model model, Principal principal) {
+        User currentUser = userService.findByUsername(principal.getName());
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("user", new User());
         return "newUser";
     }
@@ -46,8 +54,8 @@ public class AdminController {
     }
 
     @PostMapping(value = "/update")
-    public String update(@ModelAttribute("user") User user, @RequestParam("id") Long id) {
-        userService.updateUser(id, user);
+    public String update(@ModelAttribute("user") User user) {
+        userService.updateUser(user.getId(), user);
         return "redirect:/admin";
     }
 
@@ -56,4 +64,13 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
+
+    @GetMapping("/user")
+    public String userInfo(Model model, Principal principal) {
+        User currentUser = userService.findByUsername(principal.getName());
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userAdmin", userService.oneUserInfo());
+        return "userAdmin";
+    }
+
 }
