@@ -83,14 +83,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void updateUser(Long id, User user) {
+    public void updateUser(Long id, User user, String password, Set<Role> roles) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User  not found"));
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (password != null && !password.isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(password));
         }
         existingUser.setUsername(user.getUsername());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setAge(user.getAge());
         existingUser.setEmail(user.getEmail());
+        if (roles != null) {
+            existingUser .setRoles(roles);
+        }
         userRepository.save(existingUser);
     }
 

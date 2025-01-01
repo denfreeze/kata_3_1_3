@@ -18,7 +18,7 @@ public interface UserService {
 
     User oneUserInfo();
 
-    void updateUser(Long id, User user);
+    void updateUser(Long id, User user, String password, Set<Role> roles);
 
     void deleteUser(Long id);
 

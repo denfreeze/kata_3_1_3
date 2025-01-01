@@ -28,6 +28,16 @@
         .nav-tabs {
             margin-top: 5px;
         }
+
+        .form-control {
+            width: 300px;
+        }
+
+        .tab-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -70,11 +80,22 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-new-user" role="tabpanel"
                          aria-labelledby="nav-new-user-tab">
+                        <h5>Add new user</h5>
                         <form th:method="POST" th:action="@{/admin/new}" th:object="${user}">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label">First name</label>
                                 <input type="text" class="form-control" th:field="*{username}" id="username"
-                                       placeholder="Enter username" required>
+                                       placeholder="Enter first name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" th:field="*{lastName}" id="lastName"
+                                       placeholder="Enter last name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" th:field="*{age}" id="age"
+                                       placeholder="Age" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>

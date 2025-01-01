@@ -70,15 +70,21 @@
                     </tr>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Username</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Age</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td th:text="${userAdmin.id}"></td>
                         <td th:text="${userAdmin.username}"></td>
+                        <td th:text="${userAdmin.lastName}"></td>
+                        <td th:text="${userAdmin.age}"></td>
                         <td th:text="${userAdmin.email}"></td>
+                        <td th:text="${userAdmin.roles}"></td>
                     </tr>
                     </tbody>
                 </table>

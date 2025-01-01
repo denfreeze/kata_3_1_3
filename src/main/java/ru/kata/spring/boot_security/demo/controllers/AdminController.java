@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
@@ -19,11 +17,6 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping
     public String getUsers(Model model, Principal principal) {
@@ -47,15 +40,20 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    @GetMapping(value = "/edit")
-    public String edit(@RequestParam(value = "id") long id, Model model) {
-        model.addAttribute("user", userService.getOne(id));
-        return "editUser";
-    }
+    // @GetMapping(value = "/edit")
+    // public String edit(@RequestParam(value = "id") long id, Model model) {
+    //     model.addAttribute("user", userService.getOne(id));
+    //     return "editUser";
+    // }
 
     @PostMapping(value = "/update")
-    public String update(@ModelAttribute("user") User user) {
-        userService.updateUser(user.getId(), user);
+    public String update(@ModelAttribute("user") User user,
+                         @RequestParam("id") long id,
+                         @RequestParam(value = "role", required = false) Set<Role> roles) {
+
+        String password = user.getPassword();
+        userService.updateUser(id, user, password, roles);
+        //userService.updateUser(user.getId(), user);
         return "redirect:/admin";
     }
 
